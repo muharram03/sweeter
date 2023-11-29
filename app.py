@@ -3,6 +3,10 @@ Nama: Muharram Mahdafiqia
 ID: 200150126
 Kelompok: 3
 """
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
+
 from flask import Flask, render_template, jsonify, request, session, redirect, url_for
 from pymongo import MongoClient
 import jwt
@@ -11,15 +15,21 @@ import hashlib
 import requests
 from werkzeug.utils import secure_filename
 
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+MONGODB_URI = os.environ.get("MONGODB_URI")
+DB_NAME =  os.environ.get("DB_NAME")
+
+client = MongoClient(MONGODB_URI)
+
+db = client[DB_NAME]
+
 app=Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 app.config['UPLOAD_FOLDER'] = './static/profile_pics'
 
 SECRET_KEY = 'Dapee'
-
-MONGOBD_CONNECTION_STRING = 'mongodb+srv://muharram200150126:200150126@cluster0.qxfmag2.mongodb.net/?retryWrites=true&w=majority'
-client = MongoClient(MONGOBD_CONNECTION_STRING)
-db = client.sweeter
 
 TOKEN_KEY='mytoken'
 
